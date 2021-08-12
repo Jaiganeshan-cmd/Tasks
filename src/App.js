@@ -1,23 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect } from "react";
+import { useState } from "react";
+import { useSelector } from "react-redux";
+import "./App.css";
+import AddTask from "./components/AddTask";
+import ShowTasks from "./components/ShowTasks";
+import { allTasks } from "./slices/TaskSlice";
 
 function App() {
+  const tasks = useSelector(allTasks);
+  // const tasks = 1;
+  console.log(tasks);
+  const [add, setAdd] = useState(true);
+  useEffect(() => {
+    setAdd(false);
+  }, [tasks]);
+
+  const addClicked = () => {
+    console.log("adder");
+    setAdd(!add);
+  };
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div>
+        <div className="header">
+          <p className="task_nos">TASKS {tasks.length}</p>
+          <button className="addNewTask" onClick={addClicked}>
+            +
+          </button>
+        </div>
+        {tasks.length ? <ShowTasks /> : null}
+        {add ? <AddTask /> : null}
+      </div>
     </div>
   );
 }

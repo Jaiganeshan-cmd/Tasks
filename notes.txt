@@ -1,0 +1,3 @@
+ bg-color:#EDF7FC
+
+ btn-color:#47BB7F
