@@ -12,10 +12,7 @@ function AddTask() {
 
   const dispatch = useDispatch();
   let [id, setId] = useState(0);
-  const handleCancel = () =>
-  {
-    
-  }
+  const handleCancel = () => {};
 
   const handleSave = (e) => {
     e.preventDefault();
@@ -64,7 +61,7 @@ function AddTask() {
             placeholder="Enter new Task..."
             id="Task Description"
             className="input_field"
-            required
+            autoComplete="off"
           />
         </div>
         <div className="date_time container">
@@ -75,7 +72,7 @@ function AddTask() {
               id="Date"
               className="input_field "
               ref={date}
-              required
+              autoComplete="off"
             />
           </div>
           <div className="time">
@@ -85,7 +82,7 @@ function AddTask() {
               id="time"
               className="input_field"
               ref={time}
-              required
+              autoComplete="off"
             />
           </div>
         </div>
@@ -97,7 +94,7 @@ function AddTask() {
             placeholder="User Name.."
             className="input_field"
             ref={user}
-            required
+            autoComplete="off"
           />
         </div>
         <div className=" buttons container">

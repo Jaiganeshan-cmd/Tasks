@@ -5,9 +5,31 @@
   padding: 0;
   font-family: "Nunito", sans-serif;
 }
-.App {
-  width: 35vw;
-  margin: 40px auto;
+
+/* creating layout */
+
+.page {
+  display: flex;
+}
+header {
+  height: 100vh;
+  width: 12%;
+  background-color: #323e4d;
+}
+.main {
+  display: flex;
+  flex-direction: column;
+  flex: 5 1 100%;
+}
+nav {
+  height: 40px;
+  width: 100%;
+  box-shadow: 0 5px 5px lightgray;
+  /* flex: 5 1 90vw; */
+}
+.task_box {
+  width: 300px;
+  margin: 120px 10px;
 }
 
 /* specific css */
@@ -18,7 +40,7 @@
   font-weight: 800;
 }
 .task_nos {
-  padding: 5px;
+  padding: 2px;
   flex: 4 1 400px;
 }
 .addNewTask {
@@ -26,10 +48,10 @@
   align-self: center;
   height: 100%;
   cursor: pointer;
-  padding: 8px;
+  margin-left: 10px;
   background: none;
   outline: none;
-  flex: 1 1 20px;
+  flex: 1 1 40px;
   border: none;
   border-left: 2px solid lightgray;
 }

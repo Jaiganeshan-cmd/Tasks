@@ -66,6 +66,7 @@ function EditTask({ id, desc, date, time, userName }) {
             className="input_field"
             value={Desc}
             onChange={handleDescChange}
+            autoComplete="off"
           />
         </div>
         <div className="date_time container">
@@ -77,6 +78,7 @@ function EditTask({ id, desc, date, time, userName }) {
               className="input_field "
               value={Date}
               onChange={handleDateChange}
+              autoComplete="off"
             />
           </div>
           <div className="time">
@@ -87,6 +89,7 @@ function EditTask({ id, desc, date, time, userName }) {
               className="input_field"
               value={Time}
               onChange={handleTimeChange}
+              autoComplete="off"
             />
           </div>
         </div>
@@ -99,6 +102,7 @@ function EditTask({ id, desc, date, time, userName }) {
             className="input_field"
             value={User}
             onChange={handleUserChange}
+            autoComplete="off"
           />
         </div>
         <div className=" buttons container">

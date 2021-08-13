@@ -8,8 +8,6 @@ import { allTasks } from "./slices/TaskSlice";
 
 function App() {
   const tasks = useSelector(allTasks);
-  // const tasks = 1;
-  console.log(tasks);
   const [add, setAdd] = useState(true);
   useEffect(() => {
     setAdd(false);
@@ -20,16 +18,22 @@ function App() {
     setAdd(!add);
   };
   return (
-    <div className="App">
-      <div>
-        <div className="header">
-          <p className="task_nos">TASKS {tasks.length}</p>
-          <button className="addNewTask" onClick={addClicked}>
-            +
-          </button>
+    <div className="page">
+      <header></header>
+      <div className="main">
+        <nav></nav>
+        <div className="task_box">
+          <div>
+            <div className="header">
+              <p className="task_nos">TASKS {tasks.length}</p>
+              <button className="addNewTask" onClick={addClicked}>
+                +
+              </button>
+            </div>
+            {tasks.length ? <ShowTasks /> : null}
+            {add ? <AddTask /> : null}
+          </div>
         </div>
-        {tasks.length ? <ShowTasks /> : null}
-        {add ? <AddTask /> : null}
       </div>
     </div>
   );
