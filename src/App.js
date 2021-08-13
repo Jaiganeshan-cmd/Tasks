@@ -27,10 +27,22 @@ function App() {
             <div className="header">
               <p className="task_nos">TASKS {tasks.length}</p>
               <button className="addNewTask" onClick={addClicked}>
-                +
+                {add ? "-" : "+"}
               </button>
             </div>
-            {tasks.length ? <ShowTasks /> : null}
+            {tasks.length ? (
+              <div>
+                {tasks.map((task) => (
+                  <ShowTasks
+                    desc={task.desc}
+                    id={task.id}
+                    date={task.date}
+                    time={task.time}
+                    userName={task.userName}
+                  />
+                ))}
+              </div>
+            ) : null}
             {add ? <AddTask /> : null}
           </div>
         </div>

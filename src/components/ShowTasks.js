@@ -6,7 +6,7 @@ import { useState } from "react";
 
 import EditTask from "./EditTask";
 
-function ShowTasks() {
+function ShowTasks({ id, desc, date, time, userName }) {
   const tasks = useSelector(allTasks);
   const [edit, setEdit] = useState(false);
   useEffect(() => {
@@ -17,36 +17,34 @@ function ShowTasks() {
   };
   return (
     <>
-      {tasks.map((task) => (
-        <div>
-          <div className="tasks_bar">
-            <div className="details">
-              <p>{task.desc}</p>
-              <p className="show_date">{task.date}</p>
+      <div>
+        <div className="tasks_bar">
+          <div className="details">
+            <p>{desc}</p>
+            <p className="show_date">{date}</p>
+          </div>
+          <div className="icons">
+            <div className="edit m-l" onClick={handleEdit}>
+              <PencilIcon />
             </div>
-            <div className="icons">
-              <div className="edit m-l" onClick={handleEdit}>
-                <PencilIcon />
-              </div>
-              <div className="bell">
-                <BellIcon />
-              </div>
-              <div className="check">
-                <CheckIcon />
-              </div>
+            <div className="bell">
+              <BellIcon />
+            </div>
+            <div className="check">
+              <CheckIcon />
             </div>
           </div>
-          {edit && (
-            <EditTask
-              desc={task.desc}
-              id={task.id}
-              date={task.date}
-              time={task.time}
-              userName={task.userName}
-            />
-          )}
         </div>
-      ))}
+        {edit && (
+          <EditTask
+            desc={desc}
+            id={id}
+            date={date}
+            time={time}
+            userName={userName}
+          />
+        )}
+      </div>
     </>
   );
 }
