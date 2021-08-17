@@ -4,7 +4,8 @@ import { addTask } from "../slices/TaskSlice";
 import { useDispatch } from "react-redux";
 import Joi from "joi";
 
-function AddTask() {
+function AddTask({ dropDown }) {
+  console.log(dropDown);
   const desc = useRef();
   const date = useRef();
   const time = useRef();
@@ -12,7 +13,7 @@ function AddTask() {
 
   const dispatch = useDispatch();
   let [id, setId] = useState(0);
-  const handleCancel = () => {};
+  let [userName, setUserName] = useState("jai");
 
   const handleSave = (e) => {
     e.preventDefault();
@@ -22,34 +23,34 @@ function AddTask() {
     const Time = time.current.value;
     const User = user.current.value;
     const task = {
-      id: id,
-      desc: Description,
-      date: Date,
-      time: Time,
-      userName: User,
+      assigned_user: user.current.value,
+      task_date: Date,
+      task_time: 0,
+      is_completed: 0,
+      time_zone: 2600,
+      task_msg: Description,
     };
-    const validation = validate(task);
-    if (validation.error) {
-      alert(validation.error);
-    } else {
-      dispatch(addTask(task));
-      desc.current.value = "";
-      date.current.value = "";
-      time.current.value = "";
-      user.current.value = "";
-    }
-  };
-  function validate(inputs) {
-    const schema = Joi.object({
-      id: Joi.number(),
-      desc: Joi.string().required(),
-      date: Joi.date().required(),
-      time: Joi.required(),
-      userName: Joi.string().required(),
+    dispatch({
+      type: "addApi",
+      payload: {
+        url: "https://stage.api.sloovi.com/task/lead_c1de2c7b9ab94cb9abad131b7294cd8b?company_id=company_0336d06ff0ec4b3b9306ddc288482663",
+        method: "post",
+        headers: {
+          Authorization:
+            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MjkwOTQ2ODksIm5iZiI6MTYyOTA5NDY4OSwianRpIjoiYmMzM2UyNDItZTYzMy00MjdiLTkxMzctZjc1OWY4NjNiZTY5IiwiaWRlbnRpdHkiOnsibmFtZSI6Ik1haGkgTVNEIENTSyBDYXB0YWluIiwiZW1haWwiOiJnb29kQHRlc3QzLmNvbSIsInVzZXJfaWQiOiJ1c2VyXzQxYzFkNDg1NjRhODQzNWQ4MTU2NDM5OTZkOWEzODhmIiwiaWNvbiI6Imh0dHA6Ly93d3cuZ3JhdmF0YXIuY29tL2F2YXRhci9mZDE3ZDIwNjUwYzk5NTk0YWVmNmQxMjVhMjU5ODdlYT9kZWZhdWx0PWh0dHBzJTNBJTJGJTJGczMuc2xvb3ZpLmNvbSUyRmF2YXRhci1kZWZhdWx0LWljb24ucG5nIiwiYnlfZGVmYXVsdCI6Im91dHJlYWNoIn0sImZyZXNoIjpmYWxzZSwidHlwZSI6ImFjY2VzcyJ9.5ru9K2M1hSc10nI4EdfA64nV1Q5zwtF4F7bYovwq3bM",
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        data: JSON.stringify(task),
+        onSuccess: "task/addTask",
+      },
     });
+  };
 
-    return schema.validate(inputs);
-  }
+  const handleChange = (e) => {
+    setUserName(e.target.value);
+    console.log(userName);
+  };
   return (
     <div>
       <form className="newTask">
@@ -81,6 +82,7 @@ function AddTask() {
               type="time"
               id="time"
               className="input_field"
+              step="1"
               ref={time}
               autoComplete="off"
             />
@@ -88,21 +90,33 @@ function AddTask() {
         </div>
         <div className="container user">
           <label htmlFor="user">Assigned User</label>
-          <input
+          {/* <input
             type="text"
             id="user"
             placeholder="User Name.."
             className="input_field"
             ref={user}
             autoComplete="off"
-          />
+          /> */}
+          <select
+            htmlFor="user"
+            className="arrows"
+            onChange={handleChange}
+            ref={user}
+          >
+            <option value=""></option>
+            {dropDown.map((user) => (
+              <option value={user.id} id="user">
+                {user.name}
+              </option>
+            ))}
+          </select>
         </div>
         <div className=" buttons container">
           <input
             type="button"
             value="Cancel"
             className="cancel_button button_pos"
-            onClick={handleCancel}
           />
           <input
             type="submit"

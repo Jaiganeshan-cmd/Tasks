@@ -12,6 +12,7 @@ function ShowTasks({ id, desc, date, time, userName }) {
   useEffect(() => {
     setEdit(false);
   }, [tasks]);
+
   const handleEdit = () => {
     setEdit(!edit);
   };
@@ -37,6 +38,7 @@ function ShowTasks({ id, desc, date, time, userName }) {
         </div>
         {edit && (
           <EditTask
+            key={id}
             desc={desc}
             id={id}
             date={date}

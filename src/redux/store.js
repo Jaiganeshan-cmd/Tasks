@@ -1,7 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import reducer from "./reducers";
+import getApi from "../middleware/getApi";
+import addApi from "../middleware/addApi";
+import deleteApi from "../middleware/deleteApi";
+import updateApi from "../middleware/updateApi";
 
-import { persistStore } from "redux-persist";
-
-export const store = configureStore({ reducer });
-export const persistor = persistStore(store);
+export const store = configureStore({
+  reducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(getApi, addApi, deleteApi, updateApi),
+});

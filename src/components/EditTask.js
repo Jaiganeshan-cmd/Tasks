@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import { removeTask, updateTask } from "../slices/TaskSlice";
 import { useDispatch } from "react-redux";
-import Joi from "joi";
 import { TrashIcon } from "@heroicons/react/solid";
 
 function EditTask({ id, desc, date, time, userName }) {
@@ -10,8 +8,24 @@ function EditTask({ id, desc, date, time, userName }) {
   const [Date, setDate] = useState(date);
   const [Time, setTime] = useState(time);
   const [User, setUser] = useState(userName);
+  console.log(User);
   const handleDelete = () => {
-    dispatch(removeTask(id));
+    const url = `https://stage.api.sloovi.com/task/lead_c1de2c7b9ab94cb9abad131b7294cd8b/${id}?company_id=company_0336d06ff0ec4b3b9306ddc288482663`;
+    dispatch({
+      type: "deleteApi",
+      payload: {
+        url,
+        method: "delete",
+        headers: {
+          Authorization:
+            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MjkwOTQ2ODksIm5iZiI6MTYyOTA5NDY4OSwianRpIjoiYmMzM2UyNDItZTYzMy00MjdiLTkxMzctZjc1OWY4NjNiZTY5IiwiaWRlbnRpdHkiOnsibmFtZSI6Ik1haGkgTVNEIENTSyBDYXB0YWluIiwiZW1haWwiOiJnb29kQHRlc3QzLmNvbSIsInVzZXJfaWQiOiJ1c2VyXzQxYzFkNDg1NjRhODQzNWQ4MTU2NDM5OTZkOWEzODhmIiwiaWNvbiI6Imh0dHA6Ly93d3cuZ3JhdmF0YXIuY29tL2F2YXRhci9mZDE3ZDIwNjUwYzk5NTk0YWVmNmQxMjVhMjU5ODdlYT9kZWZhdWx0PWh0dHBzJTNBJTJGJTJGczMuc2xvb3ZpLmNvbSUyRmF2YXRhci1kZWZhdWx0LWljb24ucG5nIiwiYnlfZGVmYXVsdCI6Im91dHJlYWNoIn0sImZyZXNoIjpmYWxzZSwidHlwZSI6ImFjY2VzcyJ9.5ru9K2M1hSc10nI4EdfA64nV1Q5zwtF4F7bYovwq3bM",
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        onSuccess: "task/removeTask",
+        id: id,
+      },
+    });
   };
   //handling changes
 
@@ -31,29 +45,39 @@ function EditTask({ id, desc, date, time, userName }) {
     e.preventDefault();
 
     const task = {
-      id: id,
-      desc: Desc,
-      date: Date,
-      time: Time,
-      userName: User,
+      assigned_user: userName[0].id,
+      task_date: Date,
+      task_time: 0,
+      is_completed: 0,
+      time_zone: 1900,
+      task_msg: Desc,
     };
-    const validation = validate(task);
-    if (validation.error) {
-      alert(validation.error);
-    } else {
-      dispatch(updateTask(task));
-    }
-  };
-  function validate(inputs) {
-    const schema = Joi.object({
-      id: Joi.number(),
-      desc: Joi.string().required(),
-      date: Joi.date().required(),
-      time: Joi.required(),
-      userName: Joi.string().required(),
+    console.log(Desc);
+    const url = `https://stage.api.sloovi.com/task/lead_c1de2c7b9ab94cb9abad131b7294cd8b/${id}?company_id=company_0336d06ff0ec4b3b9306ddc288482663`;
+
+    dispatch({
+      type: "updateApi",
+      payload: {
+        url,
+        method: "put",
+        headers: {
+          Authorization:
+            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MjkwOTQ2ODksIm5iZiI6MTYyOTA5NDY4OSwianRpIjoiYmMzM2UyNDItZTYzMy00MjdiLTkxMzctZjc1OWY4NjNiZTY5IiwiaWRlbnRpdHkiOnsibmFtZSI6Ik1haGkgTVNEIENTSyBDYXB0YWluIiwiZW1haWwiOiJnb29kQHRlc3QzLmNvbSIsInVzZXJfaWQiOiJ1c2VyXzQxYzFkNDg1NjRhODQzNWQ4MTU2NDM5OTZkOWEzODhmIiwiaWNvbiI6Imh0dHA6Ly93d3cuZ3JhdmF0YXIuY29tL2F2YXRhci9mZDE3ZDIwNjUwYzk5NTk0YWVmNmQxMjVhMjU5ODdlYT9kZWZhdWx0PWh0dHBzJTNBJTJGJTJGczMuc2xvb3ZpLmNvbSUyRmF2YXRhci1kZWZhdWx0LWljb24ucG5nIiwiYnlfZGVmYXVsdCI6Im91dHJlYWNoIn0sImZyZXNoIjpmYWxzZSwidHlwZSI6ImFjY2VzcyJ9.5ru9K2M1hSc10nI4EdfA64nV1Q5zwtF4F7bYovwq3bM",
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        data: JSON.stringify(task),
+        onSuccess: "task/updateTask",
+      },
     });
-    return schema.validate(inputs);
-  }
+  };
+
+  const arrays = ["", "jai", "people", "Anderw", "Hulk", "irfan"];
+
+  const handleChange = (e) => {
+    setUser(e.target.value);
+    console.log(userName);
+  };
   return (
     <div>
       <form className="newTask">
@@ -95,15 +119,17 @@ function EditTask({ id, desc, date, time, userName }) {
         </div>
         <div className="container user">
           <label htmlFor="user">Assigned User</label>
-          <input
-            type="text"
-            id="user"
-            placeholder="User Name.."
-            className="input_field"
+          <select
+            name="Cars"
+            htmlFor="user"
+            className="arrows"
+            onChange={handleChange}
             value={User}
-            onChange={handleUserChange}
-            autoComplete="off"
-          />
+          >
+            {User.map((user) => (
+              <option value={user.id}>{user.name}</option>
+            ))}
+          </select>
         </div>
         <div className=" buttons container">
           <div className="delete" onClick={handleDelete}>

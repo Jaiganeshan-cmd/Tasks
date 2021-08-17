@@ -2,12 +2,17 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   tasks: [],
+  loading: false,
+  lastFetch: null,
 };
 
 export const taskSlice = createSlice({
   name: "task",
   initialState,
   reducers: {
+    showTasks: (state, action) => {
+      state.tasks = action.payload;
+    },
     addTask: (state, action) => {
       state.tasks = [...state.tasks, action.payload];
     },
