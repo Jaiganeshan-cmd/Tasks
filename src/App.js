@@ -6,6 +6,7 @@ import "./App.css";
 import AddTask from "./components/AddTask";
 import ShowTasks from "./components/ShowTasks";
 import { allTasks } from "./slices/TaskSlice";
+import moment from "moment";
 
 function App() {
   const dispatch = useDispatch();
@@ -14,7 +15,7 @@ function App() {
   const [users, setUser] = useState([]);
 
   useEffect(() => {
-    // setAdd(false);
+    setAdd(false);
     dispatch({
       type: "getApi",
       payload: {
@@ -29,6 +30,7 @@ function App() {
         onSuccess: "task/showTasks",
       },
     });
+    console.log("working");
   }, []);
 
   useEffect(() => {
@@ -78,14 +80,9 @@ function App() {
                     desc={task.task_msg}
                     id={task.id}
                     date={task.task_date}
-                    time={
-                      task.created
-                        ? new Date(task.created)
-                            .toISOString()
-                            .split("T")[1]
-                            .split(".")[0]
-                        : task.time
-                    }
+                    time={new Date(task.task_time * 1000)
+                      .toISOString()
+                      .substr(11, 8)}
                     userName={users}
                   />
                 ))}

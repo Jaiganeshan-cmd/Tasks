@@ -2,7 +2,7 @@ import { useRef } from "react";
 import React, { useState } from "react";
 import { addTask } from "../slices/TaskSlice";
 import { useDispatch } from "react-redux";
-import Joi from "joi";
+import moment from "moment";
 
 function AddTask({ dropDown }) {
   console.log(dropDown);
@@ -22,12 +22,16 @@ function AddTask({ dropDown }) {
     const Date = date.current.value;
     const Time = time.current.value;
     const User = user.current.value;
+    var hms = Time;
+    var a = hms.split(":");
+
+    var seconds = +a[0] * 60 * 60 + +a[1] * 60 + +a[2];
     const task = {
       assigned_user: user.current.value,
       task_date: Date,
-      task_time: 0,
+      task_time: seconds,
       is_completed: 0,
-      time_zone: 2600,
+      time_zone: 0,
       task_msg: Description,
     };
     dispatch({
@@ -45,6 +49,10 @@ function AddTask({ dropDown }) {
         onSuccess: "task/addTask",
       },
     });
+
+    desc.current.value = "";
+    date.current.value = "";
+    time.current.value = "";
   };
 
   const handleChange = (e) => {

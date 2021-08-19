@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { TrashIcon } from "@heroicons/react/solid";
+import moment from "moment";
 
 function EditTask({ id, desc, date, time, userName }) {
   const dispatch = useDispatch();
@@ -8,7 +9,7 @@ function EditTask({ id, desc, date, time, userName }) {
   const [Date, setDate] = useState(date);
   const [Time, setTime] = useState(time);
   const [User, setUser] = useState(userName);
-  console.log(User);
+  console.log(Time);
   const handleDelete = () => {
     const url = `https://stage.api.sloovi.com/task/lead_c1de2c7b9ab94cb9abad131b7294cd8b/${id}?company_id=company_0336d06ff0ec4b3b9306ddc288482663`;
     dispatch({
@@ -47,9 +48,9 @@ function EditTask({ id, desc, date, time, userName }) {
     const task = {
       assigned_user: userName[0].id,
       task_date: Date,
-      task_time: 0,
+      task_time: Time,
       is_completed: 0,
-      time_zone: 1900,
+      time_zone: 0,
       task_msg: Desc,
     };
     console.log(Desc);
@@ -70,9 +71,9 @@ function EditTask({ id, desc, date, time, userName }) {
         onSuccess: "task/updateTask",
       },
     });
-  };
 
-  const arrays = ["", "jai", "people", "Anderw", "Hulk", "irfan"];
+    dispatch({ type: "task/add" });
+  };
 
   const handleChange = (e) => {
     setUser(e.target.value);
@@ -114,6 +115,7 @@ function EditTask({ id, desc, date, time, userName }) {
               value={Time}
               onChange={handleTimeChange}
               autoComplete="off"
+              step="1"
             />
           </div>
         </div>
